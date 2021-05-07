@@ -1,16 +1,17 @@
 import React from 'react'
-import store from '../store/index'
+// import store from '../store/index'
+import { Segment, Item } from 'semantic-ui-react'
 
-function Home() {
-    const ads = store.getState().ads;
-    
-    return ads.map((ad, idx) => (
-        <div id={idx} >
-            <div>{ad.title}</div>
-            <div>{ad.price}</div>
-        </div>
-        
-    ))
+
+function Home(props) {
+    let ads = props.ads
+    return (
+        <Segment>
+            {ads.map((ad, idx ) => (
+                <Item key={idx}>{ad.title}</Item>
+            ))}
+        </Segment>
+    )
 }
 
 export default Home;

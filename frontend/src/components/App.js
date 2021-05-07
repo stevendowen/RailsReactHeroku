@@ -1,42 +1,33 @@
-import logo from '../logo.svg';
 import '../css/App.css';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios'
-import store from "../store/index.js"
-import { useEffect } from 'react'
+// import store from "../store/index.js"
+import { useEffect, useState } from 'react'
 
+import Header from './Header'
 import Home from './Home'
-
+import { Container } from 'semantic-ui-react';
 function App() {
+  const [ads, setAds] = useState([]);
 
   useEffect(() => {
     axios.get("/products").then(response => {
-      const data = response.data;
-      store.dispatch({ type: 'SET_ADS', ads: data});
-      console.log(data);
+      setAds(response.data);
+      // store.dispatch({ type: 'SET_ADS', ads: ads});
     }).catch(error => {
       console.log(error);
     });
-  });
+  }, []);
 
   return (
-    <div className="App">
-      <Home />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+      <Container style={{marginTop: '12em'}}>
+        <Switch>
+          <Route exact path="/" render={() => (<Home ads={ads}/>)} />
+        </Switch>
+      </Container>
+    </Router>
   );
 }
 
